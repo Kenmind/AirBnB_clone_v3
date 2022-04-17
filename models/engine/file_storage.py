@@ -48,6 +48,30 @@ class FileStorage:
         with open(self.__file_path, 'w') as f:
             json.dump(json_objects, f)
 
+    def get(self, cls, id):
+        """
+            retrieves one object:
+            :param cls: class
+            :param id: id of instance
+            :return: object or None
+        """
+        class_of_obj = self.all(cls)
+
+        for obj in class_of_obj.values():
+            if id == str(obj.id):
+                return obj
+
+        return None
+
+    def count(self, cls=None):
+        """
+            count the number of objects in storage:
+            :param cls: class
+            :return: number of instances
+        """
+
+        return len(self.all(cls))
+
     def reload(self):
         """deserializes the JSON file to __objects"""
         try:
