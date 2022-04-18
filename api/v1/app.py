@@ -28,7 +28,7 @@ def hande_404_error(error):
     """ handles the 404 error
         returns 404 json
     """
-    data = {"error": "Not Found"}
+    data = {"error": "Not found"}
 
     return make_response(jsonify(data), 404)
 
