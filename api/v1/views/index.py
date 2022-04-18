@@ -4,7 +4,7 @@
 from api.v1.views import app_views
 from flask import jsonify
 from models import storage
-
+import json
 
 @app_views.route("/status", methods=['GET'], strict_slashes=False)
 def status():
@@ -14,10 +14,10 @@ def status():
     data = {
             "status": "OK"
     }
-
-    res = jsonify(data)
+    
+    res = jsonify(json.dumps(data))
     res.status_code = 200
-
+    
     return res
 
 
