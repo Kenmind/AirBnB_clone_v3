@@ -151,17 +151,12 @@ EOF  all  create  destroy  help  quit  show  update
 ```
 
 ## Bugs
-No known bugs at this time__. 
+No known bugs at this time_._ 
 
 ## Authors
-<<<<<<< HEAD
 Kennedy Kalaluka - [Github](https://github.com/Kenmind) / [Twitter](https://twitter.com/Kennedy_Sibeso)
 Peter Zyambo - [Github](https://github.com/sangwani-coder) / [Twitter](https://twitter.com/sangwani_zyambo)
-=======
-Kennedy Kalaluka - [Github](https://github.com/Kenmind) / [Twitter](https://twitter.com/Kennedy_Sibeso)  
-Peter Zyambo - [Github](https://github.com/) / [Twitter](https://twitter.com/)
->>>>>>> d00ab73ee1545f8940585f44beae96b34ab2304b
 
-Third part of Airbnb: Alexa Orrico
+Second part of Airbnb: Alexa Orrico
 ## License
 Public Domain. No copy write protection.
