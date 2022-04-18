@@ -16,7 +16,7 @@ def status():
             "status": "OK"
     }
 
-    res = jsonify(json.dumps(data))
+    res = jsonify(data)
     res.status_code = 200
 
     return res
