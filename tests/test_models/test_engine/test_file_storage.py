@@ -115,96 +115,26 @@ class TestFileStorage(unittest.TestCase):
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
 
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                     "not testing file storage")
+    def test_get(self):
+        """Test that the get method properly retrievs objects"""
+        storage = FileStorage()
+        self.assertIs(storage.get("User", "blah"), None)
+        self.assertIs(storage.get("blah", "blah"), None)
+        new_user = User()
+        new_user.save()
+        self.assertIs(storage.get("User", new_user.id), new_user)
 
-@unittest.skipIf(models.storage_t == 'db', 'skip if environ is db')
-class TestStorageGet(unittest.TestCase):
-    """
-    Testing `get()` method in DBStorage
-    """
-
-    def setUp(self):
-        """
-        setup method
-        """
-        self.state = models.state.State(name="Zambia")
-        self.state.save()
-
-    def test_get_method_obj(self):
-        """
-        testing get() method
-        :return: True if pass, else False
-        """
-
-        result = storage.get(cls="State", id=self.state.id)
-
-        self.assertIsInstance(result, models.state.State)
-
-    def test_get_method_return(self):
-        """
-        testing get() method for matching id
-        :return: True if pass, else False
-        """
-        result = storage.get(cls="State", id=str(self.state.id))
-
-        self.assertEqual(self.state.id, result.id)
-
-    def test_get_method_none(self):
-        """
-        testing get() method for None existing object
-        :return: True if pass, else False
-        """
-        result = storage.get(cls="State", id="doesnotexist")
-
-        self.assertIsNone(result)
-
-
-@unittest.skipIf(models.storage_t == 'db', 'skip if environ db')
-class TestStorageCount(unittest.TestCase):
-    """
-    tests count() method in DBStorage
-    """
-
-    def setup(self):
-        """
-        setup method
-        """
-        models.state.State()
-        models.state.State()
-        models.state.State()
-        models.state.State()
-        models.state.State()
-        models.state.State()
-        models.state.State()
-
-    def test_count_all(self):
-        """
-        testing counting all instances
-        :return: True if pass, false if not pass
-        """
-        result = storage.count()
-
-        self.assertEqual(len(storage.all()), result)
-
-    def test_count_state(self):
-        """
-        testing counting state instances
-        :return: True if pass, false if not pass
-        """
-        result = storage.count(cls="State")
-
-        self.assertEqual(len(storage.all("State")), result)
-
-    def test_count_city(self):
-        """
-        testing counting non existent
-        :return: True if pass, false if not pass
-        """
-        result = storage.count(cls="City")
-
-        self.assertEqual(
-            int(0 if len(storage.all("City")) is None else
-                len(storage.all("City"))), result)
-
-
-if __name__ == "__main__":
-    unittest.main
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                     "not testing file storage")
+    def test_count(self):
+        storage = FileStorage()
+        initial_length = len(storage.all())
+        self.assertEqual(storage.count(), initial_length)
+        state_len = len(storage.all("State"))
+        self.assertEqual(storage.count("State"), state_len)
+        new_state = State()
+        new_state.save()
+        self.assertEqual(storage.count(), initial_length + 1)
+        self.assertEqual(storage.count("State"), state_len + 1)
