@@ -12,18 +12,16 @@ def status():
     """ status route
         :return: json response
     """
-<<<<<<< HEAD
     data = {
         "status": "OK"
     }
 
     resp = jsonify(data)
     resp.status_code = 200
-=======
+
     data = {"status": "OK"}
 
     res = jsonify(data)
->>>>>>> 393c1feee075498392811f7b90a27c4f82cef5fa
 
     return resp
 
@@ -42,9 +40,10 @@ def stats():
             "users": storage.count("User"),
             }
 
-    for key, value in data.items():
-        ret_dict[key] = storage.count(value)
-    return jsonify(ret_dict)
+    resp = jsonify(data)
+    resp.status_code = 200
+
+    return resp
 
 
 if __name__ == "__main__":

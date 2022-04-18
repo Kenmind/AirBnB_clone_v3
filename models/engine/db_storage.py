@@ -3,12 +3,10 @@
 Contains the class DBStorage
 """
 
-<<<<<<< HEAD
 import models
 import json
-=======
 
->>>>>>> 393c1feee075498392811f7b90a27c4f82cef5fa
+
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.city import City
@@ -42,19 +40,15 @@ class DBStorage:
 
     def all(self, cls=None):
         """query on the current database session"""
-        objects = {}
-        if not self.__session:
-            self.reload()
-        if type(cls) == str:
-            cls = classes.get(cls, None)
-        if cls:
-            for obj in self.__session.query(cls):
-                objects[obj.__class__.__name__ + "." + obj.id] = obj
-        else:
-            for cls in classes.values():
-                for obj in self.__session.query(cls):
-                    objects[obj.__class__.__name__ + "." + obj.id] = obj
-        return (objects)
+        """query on the current database session"""
+        new_dict = {}
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         """add the object to the current database session"""
@@ -63,6 +57,22 @@ class DBStorage:
     def save(self):
         """commit all changes of the current database session"""
         self.__session.commit()
+
+    def delete(self, obj=None):
+        """delete from the current database session obj if not None"""
+        if obj is not None:
+            self.__session.delete(obj)
+
+    def reload(self):
+        """reloads data from the database"""
+        Base.metadata.create_all(self.__engine)
+        sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sess_factory)
+        self.__session = Session
+
+    def close(self):
+        """call remove() method on the private session attribute"""
+        self.__session.remove()
 
     def get(self, cls, id):
         """ retrives one object
@@ -79,21 +89,6 @@ class DBStorage:
             return None
 
     def count(self, cls=None):
-<<<<<<< HEAD
+
         """Count number of objects in storage"""
-        '''total = 0
-=======
-        """
-            count the number of objects in storage:
-            :param cls: class name
-            :return: count of instances of a class
-        """
-        total = 0
->>>>>>> 393c1feee075498392811f7b90a27c4f82cef5fa
-        if type(cls) == str and cls in name2class:
-            cls = name2class[cls]
-            total = self.__session.query(cls).count()
-        elif cls is None:
-            for cls in name2class.values():
-                total += self.__session.query(cls).count()'''
         return len(self.all(cls))

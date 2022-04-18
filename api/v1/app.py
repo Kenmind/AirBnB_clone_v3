@@ -8,13 +8,11 @@ from models import storage
 from os import getenv
 
 app = Flask(__name__)
-<<<<<<< HEAD
+
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
-=======
->>>>>>> 393c1feee075498392811f7b90a27c4f82cef5fa
 app.register_blueprint(app_views)
 cors = CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
 
