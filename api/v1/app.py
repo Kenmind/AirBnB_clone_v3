@@ -2,17 +2,21 @@
 """ Flask app """
 
 from api.v1.views import app_views
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Blueprint, make_response
 from flask_cors import CORS
 from models import storage
 from os import getenv
 
 app = Flask(__name__)
+<<<<<<< HEAD
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
+=======
+>>>>>>> 393c1feee075498392811f7b90a27c4f82cef5fa
 app.register_blueprint(app_views)
+cors = CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
@@ -22,20 +26,15 @@ def teardown(exception):
 
 
 @app.errorhandler(404)
-def hande_404_error(exception):
+def hande_404_error(error):
     """ handles the 404 error
         returns 404 json
     """
+    data = {"error": "Not Found"}
 
-    data = {
-            "error": "Not Found"
-            }
-
-    res = jsonify(data)
-    res.status_code = 404
-
-    return (res)
+    return make_response(jsonify(data), 404)
 
 
 if __name__ == "__main__":
-    app.run(getenv("HBNB_API_HOST"), getenv("HBNB_PORT"))
+    app.run(host=getenv("HBNB_API_HOST", "0.0.0.0"),
+            port=int(getenv("HBNB_PORT", "5000")))
