@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" route for handling State objects and operations
+""" route for handling City objects and operations
 """
 
 from api.v1.views import app_views, storage
