@@ -13,14 +13,13 @@ def status():
         :return: json response
     """
     data = {
-            "status": "OK"
+        "status": "OK"
     }
-    
-    res = json.dumps(data, indent = 4)
-    res = jsonify(data)
-    res.status_code = 200
 
-    return res
+    resp = jsonify(data)
+    resp.status_code = 200
+
+    return resp
 
 
 @app_views.route("/stats", methods=['GET'], strict_slashes=False)
