@@ -7,24 +7,23 @@ from models import storage
 import json
 
 
-@app_views.route("/status", methods=['GET'], strict_slashes=False)
+@app_views.route("/status", strict_slashes=False)
 def status():
     """ status route
         :return: json response
     """
-    data = {
-            "status": "OK"
-    }
+    data = {"status": "OK"}
 
     res = jsonify(data)
-    res.status_code = 200
 
     return res
 
 
-@app_views.route("/stats", methods=['GET'], strict_slashes=False)
+@app_views.route("/stats", strict_slashes=False)
 def stats():
     """ retrives the number of objects by type"""
+    ret_dict = {}
+
     data = {
             "amenities": storage.count("Amenity"),
             "cities": storage.count("City"),
@@ -34,7 +33,10 @@ def stats():
             "users": storage.count("User"),
             }
 
-    res = jsonify(data)
-    res.status_code = 200
+    for key, value in data.items():
+        ret_dict[key] = storage.count(value)
+    return jsonify(ret_dict)
 
-    return res
+
+if __name__ == "__main__":
+    pass
