@@ -80,13 +80,20 @@ class DBStorage:
             :param id: id of object as string
             :return: found object or None
         """
-        if cls is not None and type(cls) is str and id is not None and\
+        '''if cls is not None and type(cls) is str and id is not None and\
            type(id) is str and cls in name2class:
             cls = name2class[cls]
             result = self.__session.query(cls).filter(cls.id == id).first()
             return result
         else:
-            return None
+            return None'''
+        all_class = self.all(cls)
+
+        for obj in all_class.values():
+            if id == str(obj.id):
+                return obj
+
+        return None
 
     def count(self, cls=None):
 
