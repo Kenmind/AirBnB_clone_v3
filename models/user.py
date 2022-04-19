@@ -27,3 +27,21 @@ class User(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializes user"""
         super().__init__(*args, **kwargs)
+
+    @property
+    def password_hash(self):
+        """
+        getter for password
+        :return: hashed password
+        """
+        return self.__dict__.get("password")
+
+    @password_hash.setter
+    def password_hash(self, password):
+        from hashlib import md5
+        """
+            pssword setter, with md5 hashing
+            :param password: password
+            :return: nothing
+        """
+        self.__dict__["password"] = md5(password.encode('utf-8')).hexdigest()
