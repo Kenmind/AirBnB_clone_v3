@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ holds class User"""
+import hashlib
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
@@ -10,17 +11,19 @@ from sqlalchemy.orm import relationship
 
 class User(BaseModel, Base):
     """Representation of a user """
-    if models.storage_t == 'db':
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
-        password = Column(String(128), nullable=False)
+        _password = Column("password", String(128), nullable=False)
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
-        places = relationship("Place", backref="user")
-        reviews = relationship("Review", backref="user")
+        places = relationship("Place", backref="user",
+                              cascade="all, delete-orphan")
+        reviews = relationship("Review", backref="user",
+                               cascade="all, delete-orphan")
     else:
         email = ""
-        password = ""
+        _password = ""
         first_name = ""
         last_name = ""
 
@@ -34,14 +37,13 @@ class User(BaseModel, Base):
         getter for password
         :return: hashed password
         """
-        return self.__dict__.get("password")
+        return self._password
 
     @password_hash.setter
     def password_hash(self, password):
-        from hashlib import md5
         """
             pssword setter, with md5 hashing
             :param password: password
             :return: nothing
         """
-        self.__dict__["password"] = md5(password.encode('utf-8')).hexdigest()
+        self._password = hashlib.md5(password.encode()).hexdigest()
