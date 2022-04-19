@@ -32,18 +32,18 @@ class User(BaseModel, Base):
         super().__init__(*args, **kwargs)
 
     @property
-    def password_hash(self):
+    def password(self):
         """
         getter for password
         :return: hashed password
         """
         return self._password
 
-    @password_hash.setter
-    def password_hash(self, password):
+    @password.setter
+    def password(self, passwd):
         """
             pssword setter, with md5 hashing
             :param password: password
             :return: nothing
         """
-        self._password = hashlib.md5(password.encode()).hexdigest()
+        self._password = hashlib.md5(passwd.encode()).hexdigest()
